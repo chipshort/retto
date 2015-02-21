@@ -54,9 +54,6 @@ class Graphics
 	 */
 	public var smoothing (get, never) : Bool;
 	
-	//TODO: having this here instead of internalGraphics could cause problems with canvasGraphics
-	public var translations = new Array<Float> ();
-	
 	var game : Game;
 	var internalG : InternalGraphics;
 	
@@ -69,11 +66,13 @@ class Graphics
 	
 	inline function get_translateX () : Float
 	{
-		return translations[translations.length - 2];
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		return g.translations[g.translations.length - 2];
 	}
 	inline function get_translateY () : Float
 	{
-		return translations[translations.length - 1];
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		return g.translations[g.translations.length - 1];
 	}
 	
 	inline function get_color () : Color
@@ -92,8 +91,6 @@ class Graphics
 	{
 		graphics = this;
 		game = container;
-		
-		pushTranslation (0, 0);
 		
 		#if native
 		internalG = new retto.graphics.internal.TileSheetGraphics (container);
@@ -161,8 +158,10 @@ class Graphics
 	 */
 	public inline function pushTranslation (x : Float, y : Float) : Void
 	{
-		translations.push (x);
-		translations.push (y);
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		
+		g.translations.push (x);
+		g.translations.push (y);
 	}
 	
 	/**
@@ -170,8 +169,10 @@ class Graphics
 	 */
 	public inline function popTranslation () : Void
 	{
-		translations.pop ();
-		translations.pop ();
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		
+		g.translations.pop ();
+		g.translations.pop ();
 	}
 	
 	/**
@@ -318,7 +319,8 @@ class Graphics
 	{
 		internalG.flush ();
 		
-		translations = [];
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		g.translations = [];
 		pushTranslation (0, 0);
 	}
 	

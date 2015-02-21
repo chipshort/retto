@@ -11,10 +11,11 @@ import retto.graphics.Color;
  * @author Christoph Otter
  */
 @:access(retto.graphics.ImageData)
-class InternalGraphics 
+class InternalGraphics
 {
 	public var colors = new Array<Color> ();
 	public var smoothing = new Array<Bool> ();
+	public var translations = new Array<Float> ();
 	
 	var game : Game;
 	
@@ -38,6 +39,8 @@ class InternalGraphics
 		
 		colors.push (0xFFFFFFFF);
 		smoothing.push (true);
+		translations.push (0);
+		translations.push (0);
 	}
 	
 	public function drawImage (img : ImageData, x : Float, y : Float, angle : Float, anchorX : Float, anchorY : Float) : Void
