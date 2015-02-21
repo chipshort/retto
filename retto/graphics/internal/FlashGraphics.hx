@@ -101,7 +101,7 @@ class FlashGraphics extends InternalGraphics
 			var index = Std.int (data[i++]);
 			tempMat.setTo (data[i++], data[i++], data[i++], data[i++], x, y);
 			
-			var angle = Math.atan (tempMat.c / tempMat.d) / Math.PI * 180;
+			var angle = Math.atan (tempMat.b / tempMat.a) / Math.PI * 180;
 			var rect = sheet.getTileRect (index);
 			
 			if (angle % 360 == 0 && !getCurrentSmoothing ()) {
