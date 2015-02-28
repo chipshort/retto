@@ -151,7 +151,9 @@ class FlashGraphics extends InternalGraphics
 		return new ImageData (bmp);
 	}
 	
-	/** This is called when the stage is resized. It creates a new BitmapData with the right size. */
+	/**
+	 * This is called when the stage is resized. It creates a new BitmapData with the right size.
+	 */
 	override public function onStageResize () : Void
 	{ 
 		if (!drawToImage) {

@@ -1,4 +1,4 @@
-package retto.util;
+package retto.graphics.internal;
 import openfl.geom.Rectangle;
 import retto.graphics.ImageData;
 

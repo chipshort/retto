@@ -1,10 +1,7 @@
 package retto.graphics;
-import openfl.display.Sprite;
 import openfl.display.BitmapData;
 import openfl.display.Tilesheet;
 import openfl.events.Event;
-import openfl.geom.Matrix;
-import openfl.Lib;
 import retto.Game;
 import retto.graphics.internal.FlashGraphics;
 import retto.graphics.internal.InternalGraphics;
@@ -92,7 +89,9 @@ class Graphics
 		graphics = this;
 		game = container;
 		
-		#if native
+		#if server
+		internalG = new InternalGraphics (container);
+		#elseif native
 		internalG = new retto.graphics.internal.TileSheetGraphics (container);
 		#else
 		internalG = new FlashGraphics (container);

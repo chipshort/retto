@@ -1,6 +1,7 @@
-package retto.util;
+package retto.graphics.internal;
 import openfl.geom.Rectangle;
 import retto.graphics.ImageData;
+import retto.util.ObjMap;
 
 /**
  * This is a utility class for finding the best way to put Images into a Tilesheet.

@@ -11,8 +11,8 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import retto.graphics.Canvas;
 import retto.graphics.ImageData;
-import retto.util.Node;
-import retto.util.TexturePacker;
+import retto.graphics.internal.Node;
+import retto.graphics.internal.TexturePacker;
 
 /**
  * ...
@@ -189,7 +189,9 @@ class TileSheetGraphics extends InternalGraphics
 		return img;
 	}
 	
-	/** This packages all loaded Images into a spritesheet of minumum PO2-size. */
+	/**
+	 * This packages all loaded Images into a spritesheet of minumum PO2-size.
+	 */
 	override public function finishedImageLoading () : Void
 	{
 		var packer = new TexturePacker (maxTextureWidth, maxTextureHeight);
@@ -226,7 +228,9 @@ class TileSheetGraphics extends InternalGraphics
 			flush ();
 	}
 	
-	/** Helper function to get a color multiplied version of the given ImageData. */
+	/**
+	 * Helper function to get a color multiplied version of the given ImageData.
+	 */
 	function getColoredBitmap (img : ImageData) : BitmapData
 	{
 		var color = getCurrentColor ();
@@ -241,7 +245,9 @@ class TileSheetGraphics extends InternalGraphics
 		return img.bitmapData;
 	}
 	
-	/** Actually adds a (node) to the Spritesheet by drawing it onto the spritesheet image */
+	/**
+	 * Actually adds a (node) to the Spritesheet by drawing it onto the spritesheet image
+	 */
 	function addToSpritesheet (node : Node) : Void
 	{
 		var x = node.rect.x;
@@ -268,7 +274,9 @@ class TileSheetGraphics extends InternalGraphics
 		tilesheet = new Tilesheet (sheetData);
 	}
 	
-	/** Helper function to reset tileData in a fast way */
+	/**
+	 * Helper function to reset tileData in a fast way
+	 */
 	inline function resetTileData () : Void
 	{
 		#if (cpp || php)
