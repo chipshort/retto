@@ -1,0 +1,13 @@
+{
+	"name": "lutra",
+	"url": "http://www.google.de",
+	"license": "MIT",
+	"tags": ["cross", "openfl", "cpp", "html5", "web", "android", "ios", "mac", "windows", "linux", "native", "js", "javascript", "flash"],
+	"description": "A cross-platform low-level game engine. It is based on OpenFL.",
+	"version": "0.0.1",
+	"releasenote": "Initial release",
+	"contributors": ["chipshort"],
+	"dependencies": {
+		"openfl": ""
+	}
+}
