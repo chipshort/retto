@@ -194,6 +194,8 @@ class TileSheetGraphics extends InternalGraphics
 	 */
 	override public function finishedImageLoading () : Void
 	{
+		if (batchImages == null) return;
+		
 		var packer = new TexturePacker (maxTextureWidth, maxTextureHeight);
 		
 		batchImages.sort (function (i1 : ImageData, i2 : ImageData) { //sort by perimeter from huge to small
