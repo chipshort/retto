@@ -93,6 +93,8 @@ class TileSheetGraphics extends InternalGraphics
 			
 			var bmp = getColoredBitmap (img);
 			
+			matrix.translate (x, y);
+			
 			g.beginBitmapFill (bmp, matrix, false, getCurrentSmoothing ());
 			
 			tempPoint.x = 0;
@@ -108,12 +110,12 @@ class TileSheetGraphics extends InternalGraphics
 			tempPoint.y = height;
 			var p3 = matrix.transformPoint (tempPoint);
 			
-			//FIXME: this is not working correctly
+			//FIXME: this is not working correctly on next
 			g.drawTriangles ([
-				p0.x + x, p0.y + y,
-				p1.x + x, p1.y + y,
-				p2.x + x, p2.y + y,
-				p3.x + x, p3.y + y
+				p0.x, p0.y,
+				p1.x, p1.y,
+				p2.x, p2.y,
+				p3.x, p3.y
 			], [0, 1, 2, 1, 3, 2], [
 				0,0,
 				1,0,
@@ -145,15 +147,25 @@ class TileSheetGraphics extends InternalGraphics
 		g.drawTiles (sheet, data, getCurrentSmoothing (), Tilesheet.TILE_TRANS_2x2);
 	}
 	
+	override public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	{
+		var color = getCurrentColor ();
+		
+		g.lineStyle (1, color, color.a);
+		g.drawCircle (centerX, centerY, rad);
+	}
+	
 	override public function clear () : Void
 	{
 		resetTileData ();
 		g.clear ();
 	}
 	
-	override public function fill (color : Color) : Void
+	override public function fill () : Void
 	{
 		resetTileData ();
+		
+		var color = getCurrentColor ();
 		
 		g.beginFill (color, color.a);
 		g.drawRect (0, 0, game.gameWidth, game.gameHeight);
@@ -181,6 +193,7 @@ class TileSheetGraphics extends InternalGraphics
 		
 		if (batchImages != null) //not yet finished loading
 			batchImages.push (img);
+		
 		#if debug
 		else
 			trace ("WARNING: You are loading Images after calling 'finishLoading'. This can result in bad rendering performance.");
@@ -198,7 +211,7 @@ class TileSheetGraphics extends InternalGraphics
 		
 		var packer = new TexturePacker (maxTextureWidth, maxTextureHeight);
 		
-		batchImages.sort (function (i1 : ImageData, i2 : ImageData) { //sort by perimeter from huge to small
+		batchImages.sort (function (i1 : ImageData, i2 : ImageData) { //sort by perimeter
 			var p1 = 2 * (i1.width + i1.height);
 			var p2 = 2 * (i2.width + i2.height);
 			return p2 - p1; //from biggest to smallest

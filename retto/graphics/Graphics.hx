@@ -22,6 +22,7 @@ class Graphics
 	public static inline var TextItalic = 2; 	//010
 	public static inline var TextUnderline = 4; //100
 	
+	/** Singleton needed for Canvas drawing */
 	static var graphics : Graphics;
 	
 	/**
@@ -239,14 +240,23 @@ class Graphics
 	 * It is not recommended to use your own Tilesheets, since Retto automatically creates one for you, but it might be usefull for Tilemaps, etc.
 	 * @param	data is an Array of Float values looking like this: [x + matrix.tx, y + matrix.ty, index, matrix.a, matrix.b, matrix.c, matrix.d, ...]
 	 */
-	public inline function drawTilesheet (sheet : Tilesheet, data : Array<Float>) : Void
+	public function drawTilesheet (sheet : Tilesheet, data : Array<Float>) : Void
 	{
 		var g = canvasGraphics == null ? internalG : canvasGraphics;
 		var data = data.copy ();
 		
+		if (data.length < 7) return;
+		
 		data[0] += translateX;
 		data[1] += translateY;
 		g.drawTilesheet (sheet, data);
+	}
+	
+	public inline function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	{
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		
+		g.drawCircle (centerX, centerY, rad);
 	}
 	
 	/**
@@ -260,13 +270,13 @@ class Graphics
 	}
 	
 	/**
-	 * Fills the screen with the given (color).
+	 * Fills the screen with (color).
 	 */
-	public inline function fill (color : Color) : Void
+	public inline function fill () : Void
 	{
 		var g = canvasGraphics == null ? internalG : canvasGraphics;
 		
-		g.fill (color);
+		g.fill ();
 	}
 	
 	/**

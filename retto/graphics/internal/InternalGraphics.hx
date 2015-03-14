@@ -59,11 +59,15 @@ class InternalGraphics
 	{
 	}
 	
+	public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	{
+	}
+	
 	public function clear () : Void
 	{
 	}
 	
-	public function fill (color : Color) : Void
+	public function fill () : Void
 	{
 	}
 	

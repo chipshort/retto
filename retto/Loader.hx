@@ -24,7 +24,7 @@ class Loader
 	{
 		game = container;
 		if (defaultFont == null) {
-			defaultFont = getFont ("assets/Default.ttf");
+			defaultFont = getFont ("assets/retto/Default.ttf");
 			defaultFontName = defaultFont.fontName;
 		}
 		Assets.addEventListener (Event.CHANGE, onChange);
@@ -34,8 +34,7 @@ class Loader
 	 * Returns the Image for the given asset (id).
 	 * @param autobatching if true, the Image is added to a TextureAtlas
 	 * on native platforms to speed up rendering. you should only disable this
-	 * if you do not want to draw the Image as-is, but want to use it as a
-	 * TileMap / Tilesheet yourself.
+	 * if you draw this only once or want to use it as a TileMap / Tilesheet yourself.
 	 */
 	@:access(retto.Game)
 	@:access(retto.graphics.Graphics)
@@ -45,6 +44,9 @@ class Loader
 		if (images.exists (id)) return images.get (id);
 		
 		var bmpData = Assets.getBitmapData (id);
+		
+		if (bmpData == null) throw "There is no asset with the id: " + id;
+		
 		var img = autobatching ? game.g.registerImage (bmpData) : ImageData.fromBitmapData (bmpData);
 		images.set (id, img);
 		

@@ -1,11 +1,13 @@
 package retto.graphics.internal;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.Shape;
 import openfl.display.Tilesheet;
 import openfl.geom.ColorTransform;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import retto.graphics.Color;
+import retto.graphics.ImageData;
 
 /**
  * ...
@@ -81,7 +83,6 @@ class FlashGraphics extends InternalGraphics
 		bitmapData.lock ();
 		bitmapData.draw (tempTextField, tempMat, null, null, null, getCurrentSmoothing ());
 		bitmapData.unlock ();
-		//game.addChild (tempTextField);
 	}
 	
 	@:access(openfl.display.Tilesheet)
@@ -103,6 +104,8 @@ class FlashGraphics extends InternalGraphics
 			
 			var angle = Math.atan (tempMat.b / tempMat.a) / Math.PI * 180;
 			var rect = sheet.getTileRect (index);
+			
+			if (rect == null) continue;
 			
 			if (angle % 360 == 0 && !getCurrentSmoothing ()) {
 				tempPoint.x = x;
@@ -126,15 +129,33 @@ class FlashGraphics extends InternalGraphics
 		}
 	}
 	
-	override public function clear () : Void
+	override public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
 	{
-		fill (0);
+		//drawImage2 (circle, centerX - rad, centerY - rad, 2 * rad, 2 * rad, 0, 0, 0);
+		
+		var shape = new Shape ();
+		var color = getCurrentColor ();
+		var g = shape.graphics;
+		
+		g.lineStyle (1, color, color.a);
+		g.drawCircle (centerX, centerY, rad);
+		
+		bitmapData.lock ();
+		bitmapData.draw (shape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.unlock ();
 	}
 	
-	override public function fill (color : Color) : Void
+	override public function clear () : Void
+	{
+		colors.push (0);
+		fill ();
+		colors.pop ();
+	}
+	
+	override public function fill () : Void
 	{
 		bitmapData.lock ();
-		bitmapData.fillRect (bitmapData.rect, color);
+		bitmapData.fillRect (bitmapData.rect, getCurrentColor ());
 		bitmapData.unlock ();
 	}
 	
