@@ -41,6 +41,8 @@ class TileSheetGraphics extends InternalGraphics
 		}
 		g = container.graphics;
 		
+		shapeRenderer = new ShapeRenderer (g);
+		
 		setMaxTextureSize ();
 	}
 	
@@ -147,12 +149,31 @@ class TileSheetGraphics extends InternalGraphics
 		g.drawTiles (sheet, data, getCurrentSmoothing (), Tilesheet.TILE_TRANS_2x2);
 	}
 	
-	override public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	override public function drawCircle (centerX : Float, centerY : Float, rad : Float, fill : Bool) : Void
 	{
+		flush ();
+		
 		var color = getCurrentColor ();
 		
-		g.lineStyle (1, color, color.a);
-		g.drawCircle (centerX, centerY, rad);
+		shapeRenderer.drawCircle (centerX, centerY, rad, fill, color);
+	}
+	
+	override public function drawRect (x : Float, y : Float, width : Float, height : Float, fill : Bool) : Void
+	{
+		flush ();
+		
+		var color = getCurrentColor ();
+		
+		shapeRenderer.drawRect (x, y, width, height, fill, color);
+	}
+	
+	override public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
+	{
+		flush ();
+		
+		var color = getCurrentColor ();
+		
+		shapeRenderer.drawLine (x0, y0, x1, y1, color);
 	}
 	
 	override public function clear () : Void
@@ -189,7 +210,7 @@ class TileSheetGraphics extends InternalGraphics
 	
 	override public function registerImage (bmp : BitmapData) : ImageData
 	{
-		var img = ImageData.fromBitmapData (bmp);
+		var img = new ImageData (bmp);//ImageData.fromBitmapData (bmp);
 		
 		if (batchImages != null) //not yet finished loading
 			batchImages.push (img);

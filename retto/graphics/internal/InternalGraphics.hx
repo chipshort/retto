@@ -26,6 +26,7 @@ class InternalGraphics
 	
 	//text renderer used to render text
 	var textRenderer : TextRenderer;
+	var shapeRenderer : ShapeRenderer;
 	
 	public function new (pgame : Game)
 	{
@@ -59,7 +60,15 @@ class InternalGraphics
 	{
 	}
 	
-	public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	public function drawCircle (centerX : Float, centerY : Float, rad : Float, fill : Bool) : Void
+	{
+	}
+	
+	public function drawRect (x : Float, y : Float, width : Float, height : Float, fill : Bool) : Void
+	{
+	}
+	
+	public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
 	{
 	}
 	

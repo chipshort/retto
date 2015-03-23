@@ -14,6 +14,8 @@ abstract Color (UInt) from UInt to UInt
 	public var b (get, set) : Float;
 	public var a (get, set) : Float;
 	
+	public var rgb (get, never) : Int;
+	
 	public function new (v : UInt = 0x00000000)
 	{
 		this = v;
@@ -39,10 +41,10 @@ abstract Color (UInt) from UInt to UInt
 	
 	public inline function setColor (r : Float, g : Float, b : Float, a : Float) : Void
 	{
-		var r1 : UInt = Math.round (r * 255);
-		var g1 : UInt = Math.round (g * 255);
-		var b1 : UInt = Math.round (b * 255);
-		var a1 : UInt = Math.round (a * 255);
+		var r1 : UInt = Std.int (r * 255);
+		var g1 : UInt = Std.int (g * 255);
+		var b1 : UInt = Std.int (b * 255);
+		var a1 : UInt = Std.int (a * 255);
 		this = (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
 	}
 	
@@ -58,12 +60,12 @@ abstract Color (UInt) from UInt to UInt
 	
 	inline function get_b () : Float
 	{
-		return ((this & 0x000000FF)) / 255; //
+		return ((this & 0x000000FF)) / 255;
 	}
 	
 	inline function get_a () : Float
 	{
-		return ((this & 0xFF000000) >>> 24) / 255; //
+		return ((this & 0xFF000000) >>> 24) / 255;
 	}
 	
 	inline function set_r (v : Float) : Float
@@ -88,6 +90,11 @@ abstract Color (UInt) from UInt to UInt
 	{
 		setColor (r, g, b, v);
 		return v;
+	}
+	
+	inline function get_rgb () : Int
+	{
+		return fromFloats (r, g, b, 0); //<- hacky, but works
 	}
 	
 }

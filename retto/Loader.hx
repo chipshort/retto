@@ -47,7 +47,7 @@ class Loader
 		
 		if (bmpData == null) throw "There is no asset with the id: " + id;
 		
-		var img = autobatching ? game.g.registerImage (bmpData) : ImageData.fromBitmapData (bmpData);
+		var img = autobatching ? game.g.registerImage (bmpData) : new ImageData (bmpData);//ImageData.fromBitmapData (bmpData);
 		images.set (id, img);
 		
 		return img;

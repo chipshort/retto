@@ -19,11 +19,16 @@ class FlashGraphics extends InternalGraphics
 	var canvas : Bitmap;
 	var bitmapData : BitmapData;
 	
+	var tempShape : Shape;
+	
 	var drawToImage = true;
 
 	public function new (container : Game, ?imgData : BitmapData) 
 	{
 		super (container);
+		
+		tempShape = new Shape ();
+		shapeRenderer = new ShapeRenderer (tempShape.graphics);
 		
 		if (imgData == null) {
 			imgData = new BitmapData (game.gameWidth, game.gameHeight, true, 0x000000);
@@ -129,19 +134,41 @@ class FlashGraphics extends InternalGraphics
 		}
 	}
 	
-	override public function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	override public function drawCircle (centerX : Float, centerY : Float, rad : Float, fill : Bool) : Void
 	{
 		//drawImage2 (circle, centerX - rad, centerY - rad, 2 * rad, 2 * rad, 0, 0, 0);
 		
-		var shape = new Shape ();
 		var color = getCurrentColor ();
-		var g = shape.graphics;
+		tempShape.graphics.clear ();
 		
-		g.lineStyle (1, color, color.a);
-		g.drawCircle (centerX, centerY, rad);
+		shapeRenderer.drawCircle (centerX, centerY, rad, fill, color);
 		
 		bitmapData.lock ();
-		bitmapData.draw (shape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.unlock ();
+	}
+	
+	override public function drawRect (x : Float, y : Float, width : Float, height : Float, fill : Bool) : Void
+	{
+		var color = getCurrentColor ();
+		tempShape.graphics.clear ();
+		
+		shapeRenderer.drawRect (x, y, width, height, fill, color); //TODO: we might be able to batch these primitive calls together?
+		
+		bitmapData.lock ();
+		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.unlock ();
+	}
+	
+	override public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
+	{
+		var color = getCurrentColor ();
+		tempShape.graphics.clear ();
+		
+		shapeRenderer.drawLine (x0, y0, x1, y1, color);
+		
+		bitmapData.lock ();
+		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
 		bitmapData.unlock ();
 	}
 	

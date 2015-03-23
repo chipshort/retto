@@ -7,7 +7,7 @@ import openfl.display.BitmapData;
  */
 class ImageData
 {
-	static var imageMap = new Map<String, ImageData> ();
+	//static var imageMap = new Map<String, ImageData> ();
 	
 	public var width (get, null) : Int;
 	public var height (get, null) : Int;
@@ -25,7 +25,7 @@ class ImageData
 		sheetIndex = -1;
 	}
 	
-	static function fromBitmapData (bmp : BitmapData) : ImageData
+	/*static function fromBitmapData (bmp : BitmapData) : ImageData
 	{
 		var dataArray = bmp.getPixels (bmp.rect);
 		#if !openfl_bitfive
@@ -41,7 +41,7 @@ class ImageData
 		imageMap.set (bmpData, img);
 		
 		return img;
-	}
+	}*/
 	
 }
 

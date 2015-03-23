@@ -252,12 +252,28 @@ class Graphics
 		g.drawTilesheet (sheet, data);
 	}
 	
-	public inline function drawCircle (centerX : Float, centerY : Float, rad : Float) : Void
+	public inline function drawCircle (centerX : Float, centerY : Float, rad : Float, fill = false) : Void
 	{
 		var g = canvasGraphics == null ? internalG : canvasGraphics;
 		
-		g.drawCircle (centerX, centerY, rad);
+		g.drawCircle (centerX, centerY, rad, fill);
 	}
+	
+	public function drawRect (x : Float, y : Float, width : Float, height : Float, fill = false) : Void
+	{
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		
+		g.drawRect (x, y, width, height, fill);
+	}
+	
+	public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
+	{
+		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		
+		g.drawLine (x0, y0, x1, y1);
+	}
+	
+	//TODO: maybe add drawing functions (with precision parameter!!!)
 	
 	/**
 	 * Clears the screen.
