@@ -24,7 +24,7 @@ class Game extends Sprite
 	public var loader (default, null) : Loader;
 	public var input /*(default, null)*/ : Input;
 	
-	public var scaleMode (default, set) = new ScaleMode ();
+	public var scaleMode (default, set) = new ScaleMode (gameWidth, gameHeight);
 	
 	public var gameWidth (get, null) : Int;
 	public var gameHeight (get, null) : Int;
@@ -39,7 +39,7 @@ class Game extends Sprite
 	inline function get_gameHeight () : Int { return Lib.current.stage.stageHeight; }
 	
 	inline function set_scaleMode (mode : ScaleMode) : ScaleMode {
-		if (mode == null) mode = new ScaleMode ();
+		if (mode == null) mode = new ScaleMode (gameWidth, gameHeight);
 		
 		scaleMode = mode;
 		scaleMode.stageResized (this);

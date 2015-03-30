@@ -301,8 +301,10 @@ class Graphics
 		var sH : Float;
 		
 		if (canvas == null) {
-			sW = game.gameWidth;
-			sH = game.gameHeight;
+			sW = game.scaleMode.initWidth;
+			sH = game.scaleMode.initHeight;
+			/*sW = game.gameWidth;
+			sH = game.gameHeight;*/
 		}
 		else {
 			sW = canvas.width;

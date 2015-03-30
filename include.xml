@@ -2,5 +2,5 @@
 <project>
 	<haxelib name="openfl" />
 	
-	<assets path="assets" />
+	<assets path="assets" exclude="license.txt" />
 </project>

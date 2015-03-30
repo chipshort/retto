@@ -1,17 +1,16 @@
 package retto.graphics.scaling;
-import retto.Game;
 
 /**
  * ...
  * @author Christoph Otter
  */
-class StretchMode extends ScaleMode
+class CenterMode extends ScaleMode
 {
 	
 	override function stageResized (game : Game) : Void
 	{
-		scaleX = game.gameWidth / initWidth;
-		scaleY = game.gameHeight / initHeight;
+		dx = (game.gameWidth - initWidth) / 2;
+		dy = (game.gameHeight - initHeight) / 2;
 	}
 	
 }

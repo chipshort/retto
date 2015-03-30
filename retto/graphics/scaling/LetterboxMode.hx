@@ -9,16 +9,6 @@ import retto.graphics.Graphics;
  */
 class LetterboxMode extends ScaleMode
 {
-	var initWidth : Int;
-	var initHeight : Int;
-
-	public function new (initW : Int, initH : Int) : Void
-	{
-		super ();
-		
-		initWidth = initW;
-		initHeight = initH;
-	}
 	
 	override function stageResized (game : Game) : Void
 	{
@@ -30,8 +20,8 @@ class LetterboxMode extends ScaleMode
 		
 		scaleX = scaleY = Math.min (sX, sY);
 		
-		dX = Math.abs (gW - initWidth * scaleX) / 2;
-		dY = Math.abs (gH - initHeight * scaleY) / 2;
+		dX = (gW - initWidth * scaleX) / 2;
+		dY = (gH - initHeight * scaleY) / 2;
 	}
 	
 }
