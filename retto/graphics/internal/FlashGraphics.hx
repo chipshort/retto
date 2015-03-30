@@ -4,8 +4,6 @@ import openfl.display.BitmapData;
 import openfl.display.Shape;
 import openfl.display.Tilesheet;
 import openfl.geom.ColorTransform;
-import openfl.geom.Matrix;
-import openfl.geom.Point;
 import retto.graphics.Color;
 import retto.graphics.ImageData;
 
@@ -35,6 +33,7 @@ class FlashGraphics extends InternalGraphics
 			drawToImage = false;
 			
 			canvas = new Bitmap (imgData);
+			
 			game.addChild (canvas);
 		}
 		
@@ -78,9 +77,9 @@ class FlashGraphics extends InternalGraphics
 		bitmapData.unlock ();
 	}
 	
-	override public function drawText (text : String, x : Float, y : Float, color : Color, size : Float, font : String, style : Int) : Void
+	override public function drawText (text : String, x : Float, y : Float, size : Float, font : String, style : Int) : Void
 	{
-		var tempTextField = textRenderer.prepareTextField (text, color, size, font, style);
+		var tempTextField = textRenderer.prepareTextField (text, getCurrentColor (), size, font, style);
 		
 		tempMat.identity ();
 		tempMat.translate (x, y);
@@ -93,7 +92,11 @@ class FlashGraphics extends InternalGraphics
 	@:access(openfl.display.Tilesheet)
 	override public function drawTilesheet (sheet : Tilesheet, data : Array<Float>) : Void
 	{
+		#if openfl_bitfive
+		var bmp = sheet.nmeBitmap;
+		#else
 		var bmp = sheet.__bitmap;
+		#end
 		
 		#if debug
 		if (data.length % 7 != 0) throw "ERROR: drawTilesheet call with wrong data length.";
@@ -172,6 +175,27 @@ class FlashGraphics extends InternalGraphics
 		bitmapData.unlock ();
 	}
 	
+	override public function drawPoint (x : Float, y : Float) : Void
+	{
+		var color = getCurrentColor ();
+		var smoothing = getCurrentSmoothing ();
+		
+		if (smoothing) {
+			drawCircle (x, y, 1.5, true);
+		}
+		else {
+			var xi = Std.int (x);
+			var yi = Std.int (y);
+			
+			var mixed = color.mix (bitmapData.getPixel32 (xi, yi));
+			
+			bitmapData.lock ();
+			bitmapData.setPixel32 (xi, yi, mixed);
+			bitmapData.unlock ();
+		}
+		
+	}
+	
 	override public function clear () : Void
 	{
 		colors.push (0);
@@ -203,15 +227,18 @@ class FlashGraphics extends InternalGraphics
 	 * This is called when the stage is resized. It creates a new BitmapData with the right size.
 	 */
 	override public function onStageResize () : Void
-	{ 
+	{
 		if (!drawToImage) {
-			bitmapData = new BitmapData (game.gameWidth, game.gameHeight, true, 0x000000);
-			canvas.bitmapData = bitmapData;
+			var sM = game.scaleMode;
+			canvas.x = sM.dX;
+			canvas.y = sM.dY;
+			canvas.scaleX = sM.scaleX;
+			canvas.scaleY = sM.scaleY;
 		}
 	}
 	
-	//public function flush () : Void
 	//public function finishedImageLoading () : Void
 	//public function smoothingBeforePushed (s : Bool) : Void
+	//public function flush () : Void
 	
 }

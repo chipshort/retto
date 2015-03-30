@@ -6,6 +6,7 @@ import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.Lib;
 import retto.graphics.Graphics;
+import retto.graphics.scaling.ScaleMode;
 import retto.input.Input;
 import retto.input.Keyboard;
 import retto.input.Mouse;
@@ -17,10 +18,13 @@ import retto.input.Mouse;
 @:access(retto.input.Keyboard)
 @:access(retto.input.Mouse)
 @:access(retto.graphics.Graphics)
+@:access(retto.graphics.scaling.ScaleMode)
 class Game extends Sprite
 {
 	public var loader (default, null) : Loader;
 	public var input /*(default, null)*/ : Input;
+	
+	public var scaleMode (default, set) = new ScaleMode ();
 	
 	public var gameWidth (get, null) : Int;
 	public var gameHeight (get, null) : Int;
@@ -33,6 +37,15 @@ class Game extends Sprite
 	
 	inline function get_gameWidth () : Int { return Lib.current.stage.stageWidth; }
 	inline function get_gameHeight () : Int { return Lib.current.stage.stageHeight; }
+	
+	inline function set_scaleMode (mode : ScaleMode) : ScaleMode {
+		if (mode == null) mode = new ScaleMode ();
+		
+		scaleMode = mode;
+		scaleMode.stageResized (this);
+		
+		return scaleMode;
+	}
 	
 	public function new ()
 	{
@@ -104,6 +117,7 @@ class Game extends Sprite
 		Mouse.setPosition (Std.int (Math.max (mouseX, 0)), Std.int (Math.max (mouseY, 0)));
 		
 		onUpdate (dt);
+		Keyboard.update ();
 		Mouse.update ();
 		
 		onDraw (g);
@@ -113,9 +127,8 @@ class Game extends Sprite
 	
 	function init (e : Event) : Void
 	{
-		addEventListener (KeyboardEvent.KEY_DOWN, Keyboard.keyDown);
-		addEventListener (KeyboardEvent.KEY_UP, Keyboard.keyUp);
-		
+		stage.addEventListener (KeyboardEvent.KEY_DOWN, Keyboard.keyDown);
+		stage.addEventListener (KeyboardEvent.KEY_UP, Keyboard.keyUp);
 		stage.addEventListener (MouseEvent.MOUSE_DOWN, Mouse.LeftMouseEvent);
 		stage.addEventListener (MouseEvent.MOUSE_UP, Mouse.LeftMouseEvent);
 		stage.addEventListener (MouseEvent.RIGHT_MOUSE_DOWN, Mouse.RightMouseEvent);
@@ -128,6 +141,7 @@ class Game extends Sprite
 		lastTime = Lib.getTimer ();
 		
 		if (!inited) {
+			g.stageResized (null);
 			onInit ();
 			inited = true;
 		}
@@ -135,9 +149,8 @@ class Game extends Sprite
 	
 	function removed (e : Event) : Void
 	{
-		removeEventListener (KeyboardEvent.KEY_DOWN, Keyboard.keyDown);
-		removeEventListener (KeyboardEvent.KEY_UP, Keyboard.keyUp);
-		
+		stage.removeEventListener (KeyboardEvent.KEY_DOWN, Keyboard.keyDown);
+		stage.removeEventListener (KeyboardEvent.KEY_UP, Keyboard.keyUp);
 		stage.removeEventListener (MouseEvent.MOUSE_DOWN, Mouse.LeftMouseEvent);
 		stage.removeEventListener (MouseEvent.MOUSE_UP, Mouse.LeftMouseEvent);
 		stage.removeEventListener (MouseEvent.RIGHT_MOUSE_DOWN, Mouse.RightMouseEvent);

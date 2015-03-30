@@ -27,7 +27,7 @@ class Input
 					var def = inputDefinitions.get (str);
 					for (i in 0 ... def.length) {
 						var inp = def[i];
-						if (check (inp)) { //recursive :D
+						if (check (inp)) {
 							return true;
 						}
 					}

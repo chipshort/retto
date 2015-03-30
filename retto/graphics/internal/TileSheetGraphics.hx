@@ -6,12 +6,12 @@ import openfl.display.Tilesheet;
 import openfl.geom.ColorTransform;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
+import openfl.geom.Rectangle;
 import openfl.gl.GL;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import retto.graphics.Canvas;
 import retto.graphics.ImageData;
-import retto.graphics.internal.Node;
 import retto.graphics.internal.TexturePacker;
 
 /**
@@ -22,24 +22,31 @@ import retto.graphics.internal.TexturePacker;
 @:access(retto.Loader)
 class TileSheetGraphics extends InternalGraphics
 {
+	var container : Sprite;
 	var g : openfl.display.Graphics;
 	
 	var batchImages = new Array<ImageData> ();
 	var tilesheet : Tilesheet;
 	var sheetData : BitmapData;
 	
+	var tempRect : Rectangle;
+	
 	var tileData = new Array<Float> (); //used for batching
 	static var maxTextureWidth = 0;
 	static var maxTextureHeight = 0;
 	
-	public function new (pgame : Game, ?container : Sprite) 
+	public function new (pgame : Game, ?c : Sprite) 
 	{
 		super (pgame);
 		
-		if (container == null) { //not used as canvasGraphics
-			container = game;
+		tempRect = new Rectangle ();
+		
+		if (c == null) { //not used as canvasGraphics
+			c = game;
 		}
-		g = container.graphics;
+		g = c.graphics;
+		
+		container = c;
 		
 		shapeRenderer = new ShapeRenderer (g);
 		
@@ -112,7 +119,7 @@ class TileSheetGraphics extends InternalGraphics
 			tempPoint.y = height;
 			var p3 = matrix.transformPoint (tempPoint);
 			
-			//FIXME: this is not working correctly on next
+			//FIXME: this is not working correctly on next target
 			g.drawTriangles ([
 				p0.x, p0.y,
 				p1.x, p1.y,
@@ -130,16 +137,19 @@ class TileSheetGraphics extends InternalGraphics
 		
 	}
 	
-	override public function drawText (text : String, x : Float, y : Float, color : Color, size : Float, font : String, style : Int) : Void
+	override public function drawText (text : String, x : Float, y : Float, size : Float, font : String, style : Int) : Void
 	{
-		var tempTextField = textRenderer.prepareTextField (text, color, size, font, style);
+		var tempTextField = textRenderer.prepareTextField (text, getCurrentColor (), size, font, style);
 		
 		tempMat.identity ();
 		var bitmapData = new BitmapData (Std.int (tempTextField.width), Std.int (tempTextField.height), true, 0x00000000);
 		bitmapData.draw (tempTextField, tempMat, null, null, null, getCurrentSmoothing ());
 		
 		tempImage.bitmapData = bitmapData;
+		
+		colors.push (0xFFFFFFFF);
 		drawImage (tempImage, x, y, 0, 0, 0);
+		colors.pop ();
 	}
 	
 	override public function drawTilesheet (sheet : Tilesheet, data : Array<Float>) : Void
@@ -174,6 +184,21 @@ class TileSheetGraphics extends InternalGraphics
 		var color = getCurrentColor ();
 		
 		shapeRenderer.drawLine (x0, y0, x1, y1, color);
+	}
+	
+	override public function drawPoint (x : Float, y : Float) : Void
+	{
+		var smoothing = getCurrentSmoothing ();
+		
+		if (smoothing) {
+			drawCircle (x, y, 15, true);
+		}
+		else {
+			
+		}
+		//drawCircle (x, y, 1, true);
+		//drawRect (x, y, 1, 1, true);
+		//drawLine (x, y, x+0.5, y+0.5);
 	}
 	
 	override public function clear () : Void
@@ -264,6 +289,15 @@ class TileSheetGraphics extends InternalGraphics
 			flush ();
 	}
 	
+	override public function onStageResize () : Void
+	{
+		var sM = game.scaleMode;
+		container.x = sM.dX;
+		container.y = sM.dY;
+		container.scaleX = sM.scaleX;
+		container.scaleY = sM.scaleY;
+	}
+	
 	/**
 	 * Helper function to get a color multiplied version of the given ImageData.
 	 */
@@ -284,15 +318,20 @@ class TileSheetGraphics extends InternalGraphics
 	/**
 	 * Actually adds a (node) to the Spritesheet by drawing it onto the spritesheet image
 	 */
-	function addToSpritesheet (node : Node) : Void
+	inline function addToSpritesheet (node : Node) : Void
 	{
 		var x = node.rect.x;
 		var y = node.rect.y;
 		var img = node.image;
 		
+		tempRect.x = x;
+		tempRect.y = y;
+		tempRect.width = img.width;
+		tempRect.height = img.height;
+		
 		drawToSheet (img, x, y);
 		
-		img.sheetIndex = tilesheet.addTileRect (node.rect);
+		img.sheetIndex = tilesheet.addTileRect (tempRect);
 	}
 	
 	function drawToSheet (img : ImageData, x : Float, y : Float) : Void
@@ -334,7 +373,5 @@ class TileSheetGraphics extends InternalGraphics
 		maxTextureWidth = maxTextureHeight = GL.getParameter (GL.MAX_TEXTURE_SIZE);
 		//maxTextureWidth = maxTextureHeight = maxTextureWidth > 4096 ? 4096 : maxTextureWidth;
 	}
-	
-	//public function onStageResize () : Void
 	
 }

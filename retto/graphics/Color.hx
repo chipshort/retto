@@ -48,6 +48,16 @@ abstract Color (UInt) from UInt to UInt
 		this = (a1 << 24) | (r1 << 16) | (g1 << 8) | b1;
 	}
 	
+	public inline function mix (color : Color) : Color
+	{
+		var r = r * a * (1 - color.a) + color.r * color.a;
+		var g = g * a * (1 - color.a) + color.g * color.a;
+		var b = b * a * (1 - color.a) + color.b * color.a;
+		var a = a * (1 - color.a) + color.a;
+		
+		return Color.fromFloats (r, g, b, a);
+	}
+	
 	inline function get_r () : Float
 	{
 		return ((this & 0x00FF0000) >>> 16) / 255;

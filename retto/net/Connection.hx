@@ -14,7 +14,7 @@ import openfl.system.Security;
  */
 class Connection
 {
-	var socket = new Socket (); //TODO: this is based on TCP, not UDP ;(
+	var socket = new Socket (); //this is based on TCP, not UDP ;(
 	
 	var last = 0.0;
 	

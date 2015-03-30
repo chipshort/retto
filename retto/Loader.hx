@@ -23,11 +23,18 @@ class Loader
 	public function new (container : Game)
 	{
 		game = container;
+		#if !openfl_bitfive
 		if (defaultFont == null) {
 			defaultFont = getFont ("assets/retto/Default.ttf");
 			defaultFontName = defaultFont.fontName;
 		}
+		#else
+		defaultFontName = "";
+		#end
+		
+		#if (debug && !openfl_bitfive)
 		Assets.addEventListener (Event.CHANGE, onChange);
+		#end
 	}
 	
 	/**
@@ -83,9 +90,11 @@ class Loader
 		return SharedObject.getLocal (name);
 	}
 	
+	#if debug
 	function onChange (e : Event) : Void
 	{
 		trace ("changed");
-		
+		//TODO: implement this
 	}
+	#end
 }

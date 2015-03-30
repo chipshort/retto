@@ -1,4 +1,5 @@
 package retto.graphics.internal;
+import openfl.text.TextFieldAutoSize;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
@@ -15,7 +16,7 @@ class TextRenderer
 	{
 		tempFormat = new TextFormat ();
 		tempTextField = new TextField ();
-		tempTextField.autoSize = LEFT;
+		tempTextField.autoSize = TextFieldAutoSize.LEFT;
 		tempTextField.embedFonts = true;
 		tempTextField.selectable = false;
 	}
@@ -54,5 +55,4 @@ class TextRenderer
 		
 		return tempTextField;
 	}
-	
 }

@@ -13,6 +13,7 @@ import retto.graphics.internal.InternalGraphics;
  * @author Christoph Otter
  */
 @:access(openfl.display.Stage)
+@:access(retto.graphics.scaling.ScaleMode)
 class Graphics
 {
 	//TODO: add primitive drawing (lines, points, circles, rects ...)
@@ -64,24 +65,24 @@ class Graphics
 	
 	inline function get_translateX () : Float
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		return g.translations[g.translations.length - 2];
 	}
 	inline function get_translateY () : Float
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		return g.translations[g.translations.length - 1];
 	}
 	
 	inline function get_color () : Color
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		return g.colors[g.colors.length - 1];
 	}
 	
 	inline function get_smoothing () : Bool
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		return g.smoothing[g.smoothing.length - 1];
 	}
 	
@@ -140,8 +141,7 @@ class Graphics
 	 */
 	public inline function pushColor (c : Color) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		g.colors.push (c);
+		getGraphics ().colors.push (c);
 	}
 	
 	/**
@@ -149,8 +149,7 @@ class Graphics
 	 */
 	public inline function popColor () : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		g.colors.pop ();
+		getGraphics ().colors.pop ();
 	}
 	
 	/**
@@ -158,7 +157,7 @@ class Graphics
 	 */
 	public inline function pushTranslation (x : Float, y : Float) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		
 		g.translations.push (x);
 		g.translations.push (y);
@@ -169,7 +168,7 @@ class Graphics
 	 */
 	public inline function popTranslation () : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		
 		g.translations.pop ();
 		g.translations.pop ();
@@ -180,7 +179,7 @@ class Graphics
 	 */
 	public inline function pushSmoothing (s : Bool) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
+		var g = getGraphics ();
 		g.smoothingBeforePushed (s);
 		g.smoothing.push (s);
 	}
@@ -190,8 +189,7 @@ class Graphics
 	 */
 	public inline function popSmoothing () : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		g.smoothing.pop ();
+		getGraphics ().smoothing.pop ();
 	}
 	
 	/**
@@ -203,9 +201,7 @@ class Graphics
 		if (color.a == 0 || isOffScreen (x, y, img.width, img.height))
 			return;
 		
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawImage (img, x + translateX, y + translateY, angle, anchorX, anchorY);
+		getGraphics ().drawImage (img, x + translateX, y + translateY, angle, anchorX, anchorY);
 	}
 	
 	/**
@@ -217,22 +213,19 @@ class Graphics
 		if (color.a == 0 || isOffScreen (x, y, width, height))
 			return;
 		
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawImage2 (img, x + translateX, y + translateY, width, height, angle, anchorX, anchorY);
+		getGraphics ().drawImage2 (img, x + translateX, y + translateY, width, height, angle, anchorX, anchorY);
 	}
 	
 	/**
-	 * Draws the given (text) at (x, y) with the given (color), (size), (font) and (style)
+	 * Draws the given (text) at (x, y) with the currently set (color), (size), (font) and (style)
 	 * @param	x, y top-left coordinate of the drawn text
 	 * @param	font if null, Loader.defaultFontName is used
 	 * @param	style can be Graphics.TextBold, Graphics.TextItalic and/or Graphics.TextUnderline
+	 * @example graphics.drawText ("Retto rules!", 0, 0, 0xFFFFFFFF, 12, null, Graphics.TextBold | Graphics.TextItalic);
 	 */
-	public inline function drawText (text : String, x : Float, y : Float, color : Color, size = 16.0, ?font : String, style = 0) : Void
+	public inline function drawText (text : String, x : Float, y : Float, size = 16.0, ?font : String, style = 0) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawText (text, x + translateX, y + translateY, color, size, font, style);
+		getGraphics ().drawText (text, x + translateX, y + translateY, size, font, style);
 	}
 	
 	/**
@@ -242,47 +235,41 @@ class Graphics
 	 */
 	public function drawTilesheet (sheet : Tilesheet, data : Array<Float>) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
 		var data = data.copy ();
 		
 		if (data.length < 7) return;
 		
 		data[0] += translateX;
 		data[1] += translateY;
-		g.drawTilesheet (sheet, data);
+		getGraphics ().drawTilesheet (sheet, data);
 	}
 	
 	public inline function drawCircle (centerX : Float, centerY : Float, rad : Float, fill = false) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawCircle (centerX, centerY, rad, fill);
+		getGraphics ().drawCircle (centerX, centerY, rad, fill);
 	}
 	
 	public function drawRect (x : Float, y : Float, width : Float, height : Float, fill = false) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawRect (x, y, width, height, fill);
+		getGraphics ().drawRect (x, y, width, height, fill);
 	}
 	
 	public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.drawLine (x0, y0, x1, y1);
+		getGraphics ().drawLine (x0, y0, x1, y1);
 	}
 	
-	//TODO: maybe add drawing functions (with precision parameter!!!)
+	/*public function drawPoint (x : Float, y : Float) : Void
+	{
+		getGraphics ().drawPoint (x, y);
+	}*/
 	
 	/**
 	 * Clears the screen.
 	 */
 	public inline function clear () : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.clear ();
+		getGraphics ().clear ();
 	}
 	
 	/**
@@ -290,9 +277,7 @@ class Graphics
 	 */
 	public inline function fill () : Void
 	{
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		
-		g.fill ();
+		getGraphics ().fill ();
 	}
 	
 	/**
@@ -300,6 +285,8 @@ class Graphics
 	 */
 	function stageResized (e : Event) : Void
 	{
+		game.scaleMode.stageResized (game);
+		
 		internalG.onStageResize ();
 	}
 	
@@ -344,9 +331,15 @@ class Graphics
 	{
 		internalG.flush ();
 		
-		var g = canvasGraphics == null ? internalG : canvasGraphics;
-		g.translations = [];
-		pushTranslation (0, 0);
+		game.scaleMode.render (game, this);
+		
+		var g = getGraphics ();
+		
+		if (g.translations.length != 2 || g.translations[0] != 0 || g.translations[1] != 0) {
+			getGraphics ().translations = [];
+			pushTranslation (0, 0);
+		}
+		
 	}
 	
 	/**
@@ -368,5 +361,10 @@ class Graphics
 	inline function finishedImageLoading () : Void
 	{
 		internalG.finishedImageLoading ();
+	}
+	
+	inline function getGraphics () : InternalGraphics
+	{
+		return canvasGraphics == null ? internalG : canvasGraphics;
 	}
 }

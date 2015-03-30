@@ -8,6 +8,7 @@ import openfl.events.KeyboardEvent;
 class Keyboard
 {
 	static var keys : Array<Int> = []; //array of keycodes
+	static var pressed : Array<Int> = [];
 	
 	/**
 	 * Checks if the key is currently down
@@ -16,6 +17,15 @@ class Keyboard
 	public static function isKeyDown (key : Int) : Bool
 	{
 		return keys.indexOf (key) != -1;
+	}
+	
+	/**
+	 * Checks if the key was pressed this frame
+	 * @param	key the key to check
+	 */
+	public static function wasKeyPressed (key : Int) : Bool
+	{
+		return pressed.indexOf (key) != -1;
 	}
 	
 	static function keyDown (e : KeyboardEvent) : Void
@@ -28,6 +38,14 @@ class Keyboard
 	static function keyUp (e : KeyboardEvent) : Void
 	{
 		keys.remove(e.keyCode);
+		pressed.push (e.keyCode);
+	}
+	
+	
+	static function update () : Void
+	{
+		if (pressed.length > 0)
+			pressed = [];
 	}
 	
 }

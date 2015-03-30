@@ -52,7 +52,7 @@ class InternalGraphics
 	{
 	}
 	
-	public function drawText (text : String, x : Float, y : Float, color : Color, size : Float, font : String, style : Int) : Void
+	public function drawText (text : String, x : Float, y : Float, size : Float, font : String, style : Int) : Void
 	{
 	}
 	
@@ -69,6 +69,10 @@ class InternalGraphics
 	}
 	
 	public function drawLine (x0 : Float, y0 : Float, x1 : Float, y1 : Float) : Void
+	{
+	}
+	
+	public function drawPoint (x : Float, y : Float) : Void
 	{
 	}
 	
