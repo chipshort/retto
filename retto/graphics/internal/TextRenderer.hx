@@ -31,7 +31,7 @@ class TextRenderer
 		
 		tempTextField.alpha = color.a;
 		
-		tempFormat.color = 0xFFFFFF & color;
+		tempFormat.color = color.rgb;
 		tempFormat.size = size;
 		tempFormat.font = font;
 		

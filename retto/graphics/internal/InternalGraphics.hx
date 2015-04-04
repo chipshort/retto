@@ -72,10 +72,6 @@ class InternalGraphics
 	{
 	}
 	
-	public function drawPoint (x : Float, y : Float) : Void
-	{
-	}
-	
 	public function clear () : Void
 	{
 	}

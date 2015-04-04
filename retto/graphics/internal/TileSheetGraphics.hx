@@ -186,21 +186,6 @@ class TileSheetGraphics extends InternalGraphics
 		shapeRenderer.drawLine (x0, y0, x1, y1, color);
 	}
 	
-	override public function drawPoint (x : Float, y : Float) : Void
-	{
-		var smoothing = getCurrentSmoothing ();
-		
-		if (smoothing) {
-			drawCircle (x, y, 15, true);
-		}
-		else {
-			
-		}
-		//drawCircle (x, y, 1, true);
-		//drawRect (x, y, 1, 1, true);
-		//drawLine (x, y, x+0.5, y+0.5);
-	}
-	
 	override public function clear () : Void
 	{
 		resetTileData ();

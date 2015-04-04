@@ -104,7 +104,7 @@ abstract Color (UInt) from UInt to UInt
 	
 	inline function get_rgb () : Int
 	{
-		return fromFloats (r, g, b, 0); //<- hacky, but works
+		return this & 0xFFFFFF;//fromFloats (r, g, b, 0); //<- hacky, but works
 	}
 	
 }

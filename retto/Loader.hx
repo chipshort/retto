@@ -14,7 +14,7 @@ import retto.graphics.ImageData;
  */
 class Loader
 {
-	public static var defaultFontName : String;
+	public static var defaultFontName (default, null) : String;
 	static var defaultFont : Font;
 	
 	var game : Game;
@@ -23,14 +23,11 @@ class Loader
 	public function new (container : Game)
 	{
 		game = container;
-		#if !openfl_bitfive
+		
 		if (defaultFont == null) {
-			defaultFont = getFont ("assets/retto/Default.ttf");
+			defaultFont = getFont ("assets/retto/kenpixel.ttf");
 			defaultFontName = defaultFont.fontName;
 		}
-		#else
-		defaultFontName = "";
-		#end
 		
 		#if (debug && !openfl_bitfive)
 		Assets.addEventListener (Event.CHANGE, onChange);

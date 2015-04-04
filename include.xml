@@ -2,5 +2,5 @@
 <project>
 	<haxelib name="openfl" />
 	
-	<assets path="assets" exclude="license.txt" />
+	<assets path="assets/retto/kenpixel.ttf" />
 </project>

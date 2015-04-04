@@ -333,8 +333,6 @@ class Graphics
 	{
 		internalG.flush ();
 		
-		game.scaleMode.render (game, this);
-		
 		var g = getGraphics ();
 		
 		if (g.translations.length != 2 || g.translations[0] != 0 || g.translations[1] != 0) {

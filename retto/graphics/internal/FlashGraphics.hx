@@ -175,7 +175,7 @@ class FlashGraphics extends InternalGraphics
 		bitmapData.unlock ();
 	}
 	
-	override public function drawPoint (x : Float, y : Float) : Void
+/*	override public function drawPoint (x : Float, y : Float) : Void
 	{
 		var color = getCurrentColor ();
 		var smoothing = getCurrentSmoothing ();
@@ -194,7 +194,7 @@ class FlashGraphics extends InternalGraphics
 			bitmapData.unlock ();
 		}
 		
-	}
+	}*/
 	
 	override public function clear () : Void
 	{

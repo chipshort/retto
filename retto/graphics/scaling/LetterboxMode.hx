@@ -1,7 +1,5 @@
 package retto.graphics.scaling;
 import retto.Game;
-import retto.graphics.Color;
-import retto.graphics.Graphics;
 
 /**
  * ...

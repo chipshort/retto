@@ -1,4 +1,6 @@
 package retto.graphics.scaling;
+import haxe.Serializer;
+import haxe.Unserializer;
 import retto.graphics.Graphics;
 
 /**
@@ -31,7 +33,15 @@ class ScaleMode
 		initHeight = game.gameHeight;
 	}
 	
-	function render (game : Game, g : Graphics) : Void
-	{
-	}
+	@:keep
+    function hxSerialize (s : Serializer) : Void {
+        s.serialize (initWidth);
+		s.serialize (initHeight);
+    }
+
+    @:keep
+    function hxUnserialize (u : Unserializer) : Void {
+        initWidth = u.unserialize ();
+        initHeight = u.unserialize ();
+    }
 }
