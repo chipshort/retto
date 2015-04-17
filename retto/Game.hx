@@ -10,6 +10,7 @@ import retto.graphics.scaling.ScaleMode;
 import retto.input.Input;
 import retto.input.Keyboard;
 import retto.input.Mouse;
+import retto.net.Connection;
 
 /**
  * The Game class is your main entry point for this engine
@@ -22,7 +23,15 @@ import retto.input.Mouse;
 class Game extends Sprite
 {
 	public var loader (default, null) : Loader;
-	public var input /*(default, null)*/ : Input;
+	/**
+	 * Handles keyboard, mouse and other types of input
+	 */
+	public var input (default, null) : Input;
+	/**
+	 * Set this if you want to connect to a server.
+	 * @default null
+	 */
+	public var connection : Connection;
 	
 	public var scaleMode (default, set) = new ScaleMode (gameWidth, gameHeight);
 	
@@ -59,6 +68,17 @@ class Game extends Sprite
 	}
 	
 	/**
+	 * Adds this Game to the stage.
+	 */
+	public function show () : Void
+	{
+		if (!inited)
+			finishLoading ();
+		
+		openfl.Lib.current.stage.addChild (this);
+	}
+	
+	/**
 	 * Call this function when you are finished loading Images.
 	 * This is needed for auto batching of Images.
 	 * If you load more Images after calling this, those are not batched.
@@ -87,7 +107,7 @@ class Game extends Sprite
 	
 	/**
 	 * Put all your drawing code in here.
-	 * Don't do time critical calculations here, use onUpdate for that.
+	 * Do not use this for AI, etc. Use onUpdate for that.
 	 */
 	public function onDraw (g : Graphics) : Void
 	{
@@ -95,12 +115,13 @@ class Game extends Sprite
 	
 	/**
 	 * Put your updating code here (rotation stuff, AI).
-	 * This is for everything where timing is important.
+	 * This is for game behaviour.
 	 */
 	public function onUpdate (dt : Float) : Void
 	{
 	}
 	
+	@:access(retto.net.Connection)
 	function enterFrame (e : Event) : Void
 	{
 		var cur = Lib.getTimer ();
@@ -117,6 +138,10 @@ class Game extends Sprite
 		Mouse.setPosition (Std.int (Math.max (mouseX, 0)), Std.int (Math.max (mouseY, 0)));
 		
 		onUpdate (dt);
+		
+		if (connection != null)
+			connection.update (dt);
+		
 		Keyboard.update ();
 		Mouse.update ();
 		

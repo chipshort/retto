@@ -2,7 +2,7 @@ package retto.graphics.scaling;
 import retto.Game;
 
 /**
- * ...
+ * This ScaleMode scales the Game as much as possible while keeping the same aspect ratio.
  * @author Christoph Otter
  */
 class LetterboxMode extends ScaleMode

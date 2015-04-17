@@ -36,6 +36,7 @@ class TexturePacker
 		node.image = img;
 		
 		imageNodes.set (img, node);
+		
 		return node;
 	}
 	

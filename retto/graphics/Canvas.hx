@@ -3,7 +3,9 @@ import openfl.display.BitmapData;
 import openfl.display.Sprite;
 
 /**
- * ...
+ * Use the Canvas to prerender static content.
+ * This only improves performance if you draw many things onto it.
+ * Otherwise it might even make performance worse.
  * @author Christoph Otter
  */
 @:access(retto.graphics.Graphics)

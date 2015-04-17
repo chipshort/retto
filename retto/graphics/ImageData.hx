@@ -2,7 +2,7 @@ package retto.graphics;
 import openfl.display.BitmapData;
 
 /**
- * The Image class is used for drawing. It is just a container for data.
+ * The ImageData class is used for drawing. It is just a container for data.
  * @author Christoph Otter
  */
 class ImageData
@@ -44,6 +44,3 @@ class ImageData
 	}*/
 	
 }
-
-/*
-}*/

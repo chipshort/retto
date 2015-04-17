@@ -51,7 +51,7 @@ class Graphics
 	 * Change this using pushSmoothing / popSmoothing.
 	 * @default true
 	 */
-	public var smoothing (get, never) : Bool;
+	//public var smoothing (get, never) : Bool;
 	
 	var game : Game;
 	var internalG : InternalGraphics;
@@ -80,11 +80,11 @@ class Graphics
 		return g.colors[g.colors.length - 1];
 	}
 	
-	inline function get_smoothing () : Bool
+	/*inline function get_smoothing () : Bool
 	{
 		var g = getGraphics ();
 		return g.smoothing[g.smoothing.length - 1];
-	}
+	}*/
 	
 	function new (container : Game)
 	{
@@ -177,20 +177,20 @@ class Graphics
 	/**
 	 * Set if smoothing is currently active.
 	 */
-	public inline function pushSmoothing (s : Bool) : Void
+	/*public inline function pushSmoothing (s : Bool) : Void
 	{
 		var g = getGraphics ();
 		g.smoothingBeforePushed (s);
 		g.smoothing.push (s);
-	}
+	}*/
 	
 	/**
 	 * Revert to the previous state of smoothing.
 	 */
-	public inline function popSmoothing () : Void
+	/*public inline function popSmoothing () : Void
 	{
 		getGraphics ().smoothing.pop ();
-	}
+	}*/
 	
 	/**
 	 * Draws the given (img) at (x, y) and rotated by (angle)°

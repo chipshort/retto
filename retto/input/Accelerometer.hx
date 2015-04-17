@@ -3,14 +3,23 @@ import openfl.events.AccelerometerEvent;
 import openfl.sensors.Accelerometer in FLAccelerometer;
 
 /**
- * ...
+ * This class handles access to the Accelerometer on Smartphones / Tablets.
  * @author Christoph Otter
  */
 class Accelerometer //TODO: test this
 {
-	static var accelX : Float = Math.NaN;
-	static var accelY : Float = Math.NaN;
-	static var accelZ : Float = Math.NaN;
+	/**
+	 * Math.NaN if there is no accelerometer, otherwise the x acceleration.
+	 */
+	static var accelX (default, null) : Float = Math.NaN;
+	/**
+	 * Math.NaN if there is no accelerometer, otherwise the y acceleration
+	 */
+	static var accelY (default, null) : Float = Math.NaN;
+	/**
+	 * Math.NaN if there is no accelerometer, otherwise the z acceleration
+	 */
+	static var accelZ (default, null) : Float = Math.NaN;
 	
 	static var accel : FLAccelerometer;
 
@@ -20,30 +29,6 @@ class Accelerometer //TODO: test this
 			accel = new FLAccelerometer ();
 			accel.addEventListener (AccelerometerEvent.UPDATE, update);
 		}
-	}
-	
-	/**
-	 * @return Math.NaN if there is no accelerometer, otherwise it returns the x acceleration
-	 */
-	public static function getX () : Float
-	{
-		return accelX;
-	}
-	
-	/**
-	 * @return Math.NaN if there is no accelerometer, otherwise it returns the y acceleration
-	 */
-	public static function getY () : Float
-	{
-		return accelY;
-	}
-	
-	/**
-	 * @return Math.NaN if there is no accelerometer, otherwise it returns the z acceleration
-	 */
-	public static function getZ () : Float
-	{
-		return accelZ;
 	}
 	
 	public static function hasAccelerometer ()

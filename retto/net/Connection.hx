@@ -34,6 +34,13 @@ class Connection
 	}
 	
 	/**
+	 * This is where you can send data that should be sent periodically.
+	 */
+	public dynamic function onUpdate () : Void
+	{
+	}
+	
+	/**
 	 * This is called when data arrives
 	 */
 	public dynamic function onReceive (command : String, ?data : Dynamic) : Void //TODO: change for server?
@@ -58,6 +65,17 @@ class Connection
 		catch (e : Dynamic) {
 		}
 		
+	}
+	
+	function update (dt : Float) : Void
+	{
+		last += dt;
+		if (last < 0.3) return; //TODO: hardcoded?
+		
+		last = 0;
+		
+		//now send data
+		onUpdate ();
 	}
 	
 	/*function onConnect (e : Event) : Void

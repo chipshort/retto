@@ -1,7 +1,7 @@
 package retto.graphics.scaling;
 
 /**
- * ...
+ * This ScaleMode centers the Game on the screen without actually scaling it.
  * @author Christoph Otter
  */
 class CenterMode extends ScaleMode

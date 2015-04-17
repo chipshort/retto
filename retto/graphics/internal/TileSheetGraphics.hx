@@ -15,7 +15,8 @@ import retto.graphics.ImageData;
 import retto.graphics.internal.TexturePacker;
 
 /**
- * ...
+ * This is an internal class used for rendering on Native targets like Windows, Linux, Mac, Neko, Android...
+ * It mainly uses drawTiles.
  * @author Christoph Otter
  */
 @:access(retto.graphics.ImageData)
@@ -93,7 +94,7 @@ class TileSheetGraphics extends InternalGraphics
 			var bmp = getColoredBitmap (img);
 			matrix.translate (x, y);
 			
-			g.beginBitmapFill (bmp, matrix, false, getCurrentSmoothing ());
+			g.beginBitmapFill (bmp, matrix, false); //, getCurrentSmoothing ()
 			g.drawRect (x, y, width, height);
 			g.endFill ();
 		}
@@ -104,7 +105,7 @@ class TileSheetGraphics extends InternalGraphics
 			
 			matrix.translate (x, y);
 			
-			g.beginBitmapFill (bmp, matrix, false, getCurrentSmoothing ());
+			g.beginBitmapFill (bmp, matrix, false); //, getCurrentSmoothing ()
 			
 			tempPoint.x = 0;
 			tempPoint.y = 0;
@@ -143,7 +144,7 @@ class TileSheetGraphics extends InternalGraphics
 		
 		tempMat.identity ();
 		var bitmapData = new BitmapData (Std.int (tempTextField.width), Std.int (tempTextField.height), true, 0x00000000);
-		bitmapData.draw (tempTextField, tempMat, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempTextField, tempMat, null, null, null); ////, getCurrentSmoothing ()
 		
 		tempImage.bitmapData = bitmapData;
 		
@@ -156,7 +157,7 @@ class TileSheetGraphics extends InternalGraphics
 	{
 		flush ();
 		
-		g.drawTiles (sheet, data, getCurrentSmoothing (), Tilesheet.TILE_TRANS_2x2);
+		g.drawTiles (sheet, data, false, Tilesheet.TILE_TRANS_2x2); //getCurrentSmoothing ()
 	}
 	
 	override public function drawCircle (centerX : Float, centerY : Float, rad : Float, fill : Bool) : Void
@@ -213,7 +214,7 @@ class TileSheetGraphics extends InternalGraphics
 	{
 		//this is where we actually draw
 		if (tileData.length > 0)
-			g.drawTiles (tilesheet, tileData, getCurrentSmoothing (), Tilesheet.TILE_TRANS_2x2 | Tilesheet.TILE_RGB | Tilesheet.TILE_ALPHA);
+			g.drawTiles (tilesheet, tileData, Tilesheet.TILE_TRANS_2x2 | Tilesheet.TILE_RGB | Tilesheet.TILE_ALPHA); //, getCurrentSmoothing ()
 		
 		resetTileData ();
 	}
@@ -268,11 +269,11 @@ class TileSheetGraphics extends InternalGraphics
 		batchImages = null;
 	}
 	
-	override public function smoothingBeforePushed (s : Bool) : Void
+	/*override public function smoothingBeforePushed (s : Bool) : Void
 	{
 		if (getCurrentSmoothing () != s) //we only need to flush if it actually changed
 			flush ();
-	}
+	}*/
 	
 	override public function onStageResize () : Void
 	{
@@ -309,14 +310,11 @@ class TileSheetGraphics extends InternalGraphics
 		var y = node.rect.y;
 		var img = node.image;
 		
-		tempRect.x = x;
-		tempRect.y = y;
-		tempRect.width = img.width;
-		tempRect.height = img.height;
+		var rect = new Rectangle (x, y, img.width, img.height);
 		
 		drawToSheet (img, x, y);
 		
-		img.sheetIndex = tilesheet.addTileRect (tempRect);
+		img.sheetIndex = tilesheet.addTileRect (rect);
 	}
 	
 	function drawToSheet (img : ImageData, x : Float, y : Float) : Void

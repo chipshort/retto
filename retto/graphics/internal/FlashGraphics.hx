@@ -8,7 +8,8 @@ import retto.graphics.Color;
 import retto.graphics.ImageData;
 
 /**
- * ...
+ * This is an internal class used for rendering on Flash and Html5 target.
+ * It mainly uses copyPixels and draw
  * @author Christoph Otter
  */
 @:access(retto.graphics.ImageData)
@@ -42,7 +43,7 @@ class FlashGraphics extends InternalGraphics
 	
 	override public function drawImage (img : ImageData, x : Float, y : Float, angle : Float, anchorX : Float, anchorY : Float) : Void
 	{
-		if (angle % 360 == 0 && !getCurrentSmoothing () && getCurrentColor () == 0xFFFFFFFF) {
+		if (angle % 360 == 0 && getCurrentColor () == 0xFFFFFFFF) { // && !getCurrentSmoothing ()
 			tempPoint.x = x;
 			tempPoint.y = y;
 			
@@ -73,7 +74,7 @@ class FlashGraphics extends InternalGraphics
 		tempMat.translate (x, y);
 		
 		bitmapData.lock ();
-		bitmapData.draw (img.bitmapData, tempMat, colorTransform, null, null, getCurrentSmoothing ());
+		bitmapData.draw (img.bitmapData, tempMat, colorTransform, null, null); //, getCurrentSmoothing ()
 		bitmapData.unlock ();
 	}
 	
@@ -85,7 +86,7 @@ class FlashGraphics extends InternalGraphics
 		tempMat.translate (x, y);
 		
 		bitmapData.lock ();
-		bitmapData.draw (tempTextField, tempMat, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempTextField, tempMat, null, null, null); //, getCurrentSmoothing ()
 		bitmapData.unlock ();
 	}
 	
@@ -115,7 +116,7 @@ class FlashGraphics extends InternalGraphics
 			
 			if (rect == null) continue;
 			
-			if (angle % 360 == 0 && !getCurrentSmoothing ()) {
+			if (angle % 360 == 0) { // && !getCurrentSmoothing ()
 				tempPoint.x = x;
 				tempPoint.y = y;
 				
@@ -131,7 +132,7 @@ class FlashGraphics extends InternalGraphics
 				var tempBitmap = new BitmapData (Std.int (rect.width), Std.int (rect.height));
 				tempBitmap.copyPixels (bmp, rect, tempPoint);
 				
-				bitmapData.draw (tempBitmap, tempMat, null, null, null, getCurrentSmoothing ());
+				bitmapData.draw (tempBitmap, tempMat, null, null, null); //, getCurrentSmoothing ()
 				bitmapData.unlock ();
 			}
 		}
@@ -147,7 +148,7 @@ class FlashGraphics extends InternalGraphics
 		shapeRenderer.drawCircle (centerX, centerY, rad, fill, color);
 		
 		bitmapData.lock ();
-		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempShape, null, null, null, null); //, getCurrentSmoothing ()
 		bitmapData.unlock ();
 	}
 	
@@ -159,7 +160,7 @@ class FlashGraphics extends InternalGraphics
 		shapeRenderer.drawRect (x, y, width, height, fill, color); //TODO: we might be able to batch these primitive calls together?
 		
 		bitmapData.lock ();
-		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempShape, null, null, null, null); //, getCurrentSmoothing ()
 		bitmapData.unlock ();
 	}
 	
@@ -171,7 +172,7 @@ class FlashGraphics extends InternalGraphics
 		shapeRenderer.drawLine (x0, y0, x1, y1, color);
 		
 		bitmapData.lock ();
-		bitmapData.draw (tempShape, null, null, null, null, getCurrentSmoothing ());
+		bitmapData.draw (tempShape, null, null, null, null); //, getCurrentSmoothing ()
 		bitmapData.unlock ();
 	}
 	

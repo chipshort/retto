@@ -14,7 +14,7 @@ import retto.graphics.Color;
 class InternalGraphics
 {
 	public var colors = new Array<Color> ();
-	public var smoothing = new Array<Bool> ();
+	//public var smoothing = new Array<Bool> ();
 	public var translations = new Array<Float> ();
 	
 	var game : Game;
@@ -39,7 +39,7 @@ class InternalGraphics
 		textRenderer = new TextRenderer ();
 		
 		colors.push (0xFFFFFFFF);
-		smoothing.push (true);
+		//smoothing.push (true);
 		translations.push (0);
 		translations.push (0);
 	}
@@ -105,9 +105,9 @@ class InternalGraphics
 	}
 	
 	/** This is called before a new smoothing value is pushed to the array. */
-	public function smoothingBeforePushed (s : Bool) : Void
+	/*public function smoothingBeforePushed (s : Bool) : Void
 	{
-	}
+	}*/
 	
 	/** A helper function to get the currently active color. */
 	inline function getCurrentColor () : Color
@@ -116,9 +116,9 @@ class InternalGraphics
 	}
 	
 	/** A helper function to get the current smoothing state. */
-	inline function getCurrentSmoothing () : Bool
+	/*inline function getCurrentSmoothing () : Bool
 	{
 		return smoothing[smoothing.length - 1];
-	}
+	}*/
 	
 }

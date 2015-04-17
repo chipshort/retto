@@ -29,6 +29,15 @@ class OrderedStringMap<T> implements Map.IMap<String, T>
 		map.set (k, v);
 	}
 	
+	public function insert (pos : Int, k : String, v : T) : Void
+	{
+		if (map.exists (k))
+			map.remove (k);
+		
+		keyList.insert (pos, k);
+		map.set (k, v);
+	}
+	
 	public function exists (k : String) : Bool
 	{
 		return map.exists (k);
