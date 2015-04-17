@@ -1,13 +1,13 @@
 # Retto
 Retto is a game engine based on [OpenFL](http://www.openfl.org/) and [Haxe](http://haxe.org/). It is the backend for [Lutra](https://github.com/chipshort/lutra), but can also be used on it's own.
 
-Retto is mainly centered about creating a consistant drawing API for all targets while still keeping high performance.
+Retto is mainly centered about creating a consistent drawing API for all targets while still keeping high performance.
 If you have any remarks about how to improve this, feel free to open an issue or contact me.
 This is still WIP and in an early stage of development. Use it on your own risk.
 
 ## Installation
 To install Retto, first install OpenFl: http://www.openfl.org/download/
-Open up a terminal and run:
+Then open up a terminal and run:
 ```
 haxelib git retto https://github.com/chipshort/retto.git
 ```
